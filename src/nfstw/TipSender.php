@@ -25,28 +25,28 @@ class TipSender extends PluginBase{
  
  
   	public function sendTipSender(){
-		$z = count($this->getServer()->getOnlinePlayers());//獲取在線人數
+		$online = count($this->getServer()->getOnlinePlayers());//獲取在線人數
 		date_default_timezone_set('Asia/Taipei'); //設定為台灣台北時區
 		foreach($this->getServer()->getOnlinePlayers() as $player){
 			
 			if($player->isOnline()){
-				$money = EconomyAPI::getInstance()->myMoney($player->getName());
-				$world = $player->getName()->getLevel()->getFolderName();
+				$money = EconomyAPI::getInstance()->myMoney($player);
+				$world = $player->getLevel()->getName();
 				
-				$inven = $player->getName()->getInventory();
+				$inven = $player->getInventory();
 				$item = $inven->getItemInHand();
 				$id = $item->getId();
 				$ts = $item->getDamage();
 				
-				$s = $this->plugin->getServer();
+				$s = $this->getServer();
 				$tps = (int)$s->getTicksPerSecondAverage();
 				$cpu = (int)$s->getTickUsageAverage();
 				
-				$x = (int)$player->getName()->getX();
-				$y = (int)$player->getName()->getY();
-				$z = (int)$player->getName()->getZ();
+				$x = (int)$player->getX();
+				$y = (int)$player->getY();
+				$z = (int)$player->getZ();
 				
-				$yaw = (int)$player->getName()->getYaw();
+				$yaw = (int)$player->getYaw();
 					if (22.5 <= $yaw && $yaw < 67.5) {
 						$bearing = "西北方";
 					} elseif (67.5 <= $yaw && $yaw < 112.5) {
@@ -71,7 +71,7 @@ class TipSender extends PluginBase{
 						$quanxian = "玩家";
 					}
 					
-				$player->sendTip("§d剩餘 $money 元 §b目前時間 ".date("H")." :".date("i")." :".date("s")." §a手持: $id:$ts\n§b在線: $online §e座標: §l$wn §e($x:$y:$z)$bearing");
+				$player->sendTip("§d剩餘 $money 元 §b目前時間 ".date("H")." :".date("i")." :".date("s")." §a手持: $id:$ts\n§b在線: $online §e座標: §l$world §e($x:$y:$z)$bearing");
 				$player->sendPopup("§6權限: $quanxian §3穩定度: $tps §3負載量: $cpu%\n§d本功能由夜喵(edwinyoo44)製作,勿刪除版權宣告");
 				}
 		}
